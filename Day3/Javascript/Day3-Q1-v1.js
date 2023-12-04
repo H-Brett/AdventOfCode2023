@@ -9,6 +9,7 @@ fs.readFile('../input.txt', (err, data) => {
 	}
 
 	const symbolsRegex = /[-&/*@#%+$=]/
+
 	let partCount = 0
 
 	const inArr = data.toString().split('\r\n')
@@ -23,17 +24,31 @@ fs.readFile('../input.txt', (err, data) => {
 				let above = arr[i - 1]
 				let below = arr[i + 1]
 
+
+				console.log(i, above)
+				console.log(i, line)
+				console.log(i, below)
+
+
 				let snipStart = match.index - 1
 				let snipEnd = match.index + match[0].length + 1
-					match.index == 0 ? snipStart = 0 : snipEnd == line.length + 1 ? snipEnd = line.length : null;
+				match.index == 0 ? snipStart = 0 : snipEnd == line.length + 1 ? snipEnd = line.length : null;
 				let aboveSnip = above.slice(snipStart, snipEnd)
 				let currentSnip = line.slice(snipStart, snipEnd)
 				let belowSnip = below.slice(snipStart, snipEnd)
 				let combine = aboveSnip.concat(currentSnip, belowSnip)
 
 
+				console.log(match[0])
+				console.log(aboveSnip)
+				console.log(currentSnip)
+				console.log(belowSnip)
+				console.log(symbolsRegex.test(combine))
+
+
 				if (symbolsRegex.test(combine)) {
 					partCount += parseInt(match[0])
+					// console.log(match[0], partCount)
 				}
 
 				line = line.replace(match[0], '.'.repeat(match[0].length))
