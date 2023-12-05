@@ -5,6 +5,7 @@
 const fs = require('fs')
 
 fs.readFile('../input.txt', (err, data) => {
+console.time()
 	if(err) {
 		return console.error(err);
 	}
@@ -73,4 +74,5 @@ fs.readFile('../input.txt', (err, data) => {
 	let answers = getTotals(procData)
 	console.log('Day 4 Part 1 answer:', answers[0])
 	console.log('Day 4 Part 2 answer:', answers[1])
+console.timeEnd()
 })

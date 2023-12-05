@@ -18,7 +18,6 @@ fs.readFile('../input.txt', (err, data) => {
 		})
 	}
 
-
 	let intArr = (array) => {
 		return array.map((calArr) => {
 			if(calArr.length < 2) {
@@ -34,7 +33,6 @@ fs.readFile('../input.txt', (err, data) => {
 		return array.reduce((accumulator, currentValue) => {
 			return accumulator + currentValue
 		},0)
-
 	}
 
 	let textTransform = (array) => {
