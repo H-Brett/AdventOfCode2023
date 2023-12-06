@@ -126,10 +126,8 @@ fs.readFile('../input.txt', (err, data) => {
                         locToSeedMap[key] = locToSeedMap[arr[i-1]]
                     }
 
-
                     //i == 0 ? locToSeedMap[key] = j : i == 6 ? locToSeedMap['seed'] = locToSeedMap[arr[i-1]] : locToSeedMap[key] = locToSeedMap[arr[i -1]]
                 }
-
             })
 
             part2ProcData.forEach((rangePair) => {
@@ -147,7 +145,6 @@ fs.readFile('../input.txt', (err, data) => {
 
         return matchedSeed
     }
-
 
     const getLowestSeedFromRange = (rangePair, dataObj) => {
         let returnObj = {...dataObj}
@@ -168,7 +165,6 @@ fs.readFile('../input.txt', (err, data) => {
             }
         }
 
-        
         return currentLowObj
     }
 
@@ -181,7 +177,6 @@ fs.readFile('../input.txt', (err, data) => {
 
         return closest
     }
-
 
     let procData = dataProc(dataArr)
     let seedsConstruct = seedMapping(procData)
