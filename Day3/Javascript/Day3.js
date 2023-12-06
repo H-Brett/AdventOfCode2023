@@ -9,12 +9,11 @@
 const fs = require('fs')
 
 fs.readFile('../input.txt', (err, data) => {
-	//Error Handling
 	if(err) {
 		return console.error(err);
 	}
 
-	let windowing = (match, lineIndex, array, height, width) => {
+	let getWindow = (match, lineIndex, array, height, width) => {
 		let heightPad = (height - 1) / 2
 			heightPad < 1 ? heightPad = 1 : null
 		let widthPad = (width - 1) / 2
@@ -40,7 +39,7 @@ fs.readFile('../input.txt', (err, data) => {
 
 			if(match){
 				while(match) {
-					let matchWindow = windowing(match, i, arr, 1, 1)
+					let matchWindow = getWindow(match, i, arr, 3, 3)
 
 					if (symbolsRegex.test(matchWindow.join())) {
 						partCount += parseInt(match[0])
@@ -65,7 +64,7 @@ fs.readFile('../input.txt', (err, data) => {
 			if(match){
 				while(match) {
 					let parts = []
-					let matchWindow = windowing(match, i, arr, 1,  7)
+					let matchWindow = getWindow(match, i, arr, 3,  7)
 
 					matchWindow.forEach((snip) =>{
 						let regex = /\d{1,}/
