@@ -187,7 +187,7 @@ fs.readFile('../input.txt', (err, data) => {
     let seedsConstruct = seedMapping(procData)
     let part1Answer = checkClosest(seedsConstruct)
 
-
+/*
     // multi-block comment removes processing for 30 minute part 2 run-time function
     let part2ProcData = []
         procData.seeds.forEach((seed, i, arr) => {
@@ -199,13 +199,13 @@ fs.readFile('../input.txt', (err, data) => {
         })
 
     let part2Answer = checkClosest(part2ProcData)
-
+*/
 
     console.time()
     console.log('Day 5 Part 1 answer:', part1Answer)
     
     // Part 2, ~30 minute run time, processes seed to location in batches 
-    console.log('Day 5 Part 2 answer:', part2Answer, 'seedToLoc')
+    // console.log('Day 5 Part 2 answer:', part2Answer, 'seedToLoc')
 
     // Part 2, ~7 second run time, processes locations 0 - n to seed values until seed within range found
     console.log('Day 5 Part 2 answer:', reverseMap(procData).location, 'locToSeed')
