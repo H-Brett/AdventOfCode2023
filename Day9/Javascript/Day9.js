@@ -1,7 +1,8 @@
 // H-Brett
 // 12.9.2023
 // Advent Calendar of Code Day 9
-// too high 1,980,437,571
+// Part 1 1980437560
+// Part 2 977
 
 const fs = require("fs")
 
@@ -16,11 +17,11 @@ fs.readFile('../input.txt', (err, data) => {
 	let lastValArr = []
 
 	inArr.forEach((line) => {
-		let tempArr = [line.split(' ').map((num) => { return parseInt(num) })]
+		let tempArr = [line.split(' ').map((num) => { return parseInt(num) })] // }).reverse()] // part 2 solved by reversing the array returned from map
 		let flag = false
 
 
-		while(new Set(tempArr[tempArr.length - 1]).size != 1) {//tempArr[tempArr.length - 1].reduce((a,b) => { return a+b }, 0) != 0 ) {
+		while(new Set(tempArr[tempArr.length - 1]).size != 1) {
 			tempArr.push([])
 
 			tempArr[tempArr.length - 2].forEach((num, i, arr) => {
