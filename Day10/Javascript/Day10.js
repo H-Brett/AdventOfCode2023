@@ -1,7 +1,8 @@
 // H-Brett
 // 
 // Advent Calendar of Code Day 10
-
+// Part 1 6786
+// part 2 495
 
 /*
 ['L', 'J'] conect from North to [ 'F', '7', '|' ]
@@ -13,6 +14,7 @@
 const fs = require("fs")
 
 fs.readFile('../input.txt', (err, data) => {
+//fs.readFile('../sampleInput.txt', (err, data) => {
 	if(err) {
 		return console.error(err);
 	}
@@ -23,12 +25,15 @@ fs.readFile('../input.txt', (err, data) => {
 	// console.log(3627 / 140) // 25.9, S = Row 25
 	// console.log(inArr[25].match('S')) // index 77
 	let startCoord = [ 25, 77 ]
+	// let startCoord = [0, 4] 
 	
 	// hard coding start points, handle 'S' canConnect case programatically later
 	// arbitrarily labeling one as loopForward, one as loopBack
 	// includes direction moved from last
 	let loopForwardPos = [24, 77, 'up']
 	let loopBackPos = [26, 77, 'down']
+	// let loopForwardPos = [1, 4, 'down']
+	// let loopBackPos = [0, 3, 'left']
 
 	let up = [ 'F', '7', '|' ]
 	let right = [ 'J', '7', '-' ]
@@ -36,15 +41,6 @@ fs.readFile('../input.txt', (err, data) => {
 	let left = [ 'F', 'L', '-' ]
 
 	let getCardinalDir = ([row, col, moved]) => {
-		/*
-		let north = [row - 1, col]
-		let east = [row, col + 1] 
-		let south = [row + 1, col]
-		let west = [row, col - 1]
-
-		return [north, east, south, west] 
-		*/
-
 		return {
 			north: [row - 1, col],
 			east: [row, col + 1],
@@ -65,21 +61,12 @@ fs.readFile('../input.txt', (err, data) => {
 
 
 	let canConnect = (positions, map) => {
-		//let [loopForward, loopBack] = positions
-		//console.log(row, col)
 		let x = 0
 		let y = 1
 		let nextForward
 		let nextBack
 
-		// console.log(positions)
 
-//		console.log(map[row][col])
-//		console.log(north, east, south, west)
-//		console.log(up.includes(map[north[x]][north[y]]))
-
-
-		//   i == 0 ? nextForward = [row, col, ''] : nextBack = [row, col, '']
 
 		positions.forEach((loopDir, i) => {
 			let { north, east, south, west } = getCardinalDir(loopDir)
@@ -158,72 +145,92 @@ fs.readFile('../input.txt', (err, data) => {
 
 		})
 
-		console.log(nextForward, nextBack)
 
 		return [nextForward, nextBack]
 	}
 
-		/*
-
-		switch(map[row][col]) {
-			case 'L':
-			case 'J':
-			case 'S':
-			case '|':
-				if(up.includes(map[north[x]][north[y]])) {
-					console.log(map[row][col], 'conects to', map[north[x]][north[y]])
-				}
-				//break;
-			case 'F':
-			case 'L':
-			case 'S':
-			case '-':
-				if(right.includes(map[west[x]][west[y]])) {
-					console.log(map[row][col], 'conects to', map[west[x]][west[y]])
-				}
-				//break; 
-			case 'F':
-			case '7':
-			case 'S':
-			case '|':
-				if(down.includes(map[south[x]][south[y]])) {
-					console.log(map[row][col], 'conects to', map[south[x]][south[y]])
-				}
-				//break; 
-			case 'J':
-			case '7':
-			case 'S':
-			case '-':
-				if(left.includes(map[east[x]][east[y]])) {
-					console.log(map[row][col], 'conects to', map[east[x]][east[y]])
-				}
-				//break;  
-		}
-
-	}
-	*/
-
 	let forwardCount = 1
 	let backCount = 1
-	//let nextPos;
+	let pipeMap = [[24, 77, 'up']]
 
-	// console.log(loopForwardPos[0] != loopBackPos[0], loopForwardPos[1] != loopBackPos[1])
 
 	while (inArr[loopForwardPos[0]][loopForwardPos[1]] != 'S' ||  inArr[loopBackPos[0]][loopBackPos[1]] != 'S') {
 		forwardCount += 1
 		backCount += 1
-		// console.log(loopForwardPos, loopBackPos)
 
 		nextPos = canConnect([loopForwardPos, loopBackPos], inArr)
-		//console.log(nextPos)
 
 		loopForwardPos = nextPos[0]
 		loopBackPos = nextPos[1]
-		console.log()
+		pipeMap.push(loopForwardPos)
+
 	}
 
-	console.log(forwardCount, backCount)
+	pipeMap.forEach((section) => {
+		inArr[section[0]] = inArr[section[0]].split('')
+		let pipe = inArr[section[0]][section[1]]
+
+		pipe == '|' && section[2] == 'up' ? inArr[section[0]][section[1]] = '↑' : null
+		pipe == '|' && section[2] == 'down' ? inArr[section[0]][section[1]] = '↓' : null
+		pipe == 'F' ? inArr[section[0]][section[1]] = '┌' : pipe == 'L' ? inArr[section[0]][section[1]] = '└' : pipe == '7' ? inArr[section[0]][section[1]] = '┐' : pipe == 'J' ? inArr[section[0]][section[1]] = '┘' : null
+		pipe == '-' && section[2] == 'left' ? inArr[section[0]][section[1]] = '←' : null
+		pipe == '-' && section[2] == 'right' ? inArr[section[0]][section[1]] = '→' : null
+
+		inArr[section[0]] = inArr[section[0]].join('')
+	})
 
 
-	//console.log(inArr)
+	pipeMap.sort((a, b) => {
+			return a[0] - b[0] || a[1] - b[1]
+		})
+
+	let mapObj = {}
+
+	pipeMap.forEach((pipe) => {
+		let currentRow = pipe[0]
+		if(!mapObj[currentRow]) {
+			mapObj[currentRow] = {}
+		}
+
+		mapObj[currentRow][pipe[1]] = pipe[2]
+	})
+
+
+	fieldCount = 0
+
+
+	inArr.forEach((line, i) => {
+		let insidePipe = false
+		let scanArr = line.split('')
+		let re = /[↑←→↓└┐┘┌]/
+
+		if(i == startCoord[0]) {
+			scanArr[startCoord[1]] = '↓'
+		}
+
+		for (j = 0; j < scanArr.length; j++ ) {
+			if(scanArr[j] == '↑' || (scanArr[j] == '┌' && mapObj[i][j] != 'left') || (scanArr[j] == '┐' && mapObj[i][j] == 'up')) {
+				//console.log('switch true',j, scanArr[j], mapObj[i][j])
+				insidePipe = true
+			} else if (scanArr[j] == '↓' || (scanArr[j] == '┐' && mapObj[i][j] != 'up') || (scanArr[j] == '┌' && mapObj[i][j] == 'left')) {
+				//console.log('switch false',j, scanArr[j], mapObj[i][j])
+				insidePipe = false
+			}
+
+			if(insidePipe && !re.test(scanArr[j])) {
+				scanArr[j] = 'X'
+				fieldCount++
+			}	
+		}
+
+		line = scanArr.join('')
+
+		console.log(line) // makes a pretty map
+	})
+
+	console.log('Day 10 Part 1 answer:', forwardCount / 2)
+	console.log('Day 10 Part 2 answer:', fieldCount)
+
 });
+
+// /[↑←→↓└┐┘┌]/ 
