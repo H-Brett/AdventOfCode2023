@@ -1,6 +1,8 @@
 // H-Brett
 // 12.11.2023
 // Advent Calendar of Code Day 11
+// Part 1 10313550
+// Part 2 82,000,210 too low
 
 const fs = require("fs")
 
@@ -43,24 +45,48 @@ fs.readFile('../input.txt', (err, data) => {
 		}
 	})
 
-	//console.log(emptyCol)
-	//console.log(emptyRow)
+	console.log(emptyCol)
+	console.log(emptyRow)
+
+	//inArr.forEach((line) => console.log(line))
+	// console.log(inArr[0].length)
 
 
 	inArr.forEach((line) => {
 		//console.log(line)
 		let expLine = line.split('')
+		//console.log(expLine)
 
 		for(let i = 0; i < emptyCol.length; i++) {
-			expLine.splice(emptyCol[i] + i, 0, '.')
+			let insert = Array(999999).fill('.')
+			expLine.splice(emptyCol[i] + i, 0, insert.join(''))
 		}
-		expanded.push(expLine.join(''))
 
+		expanded.push(expLine.join(''))
 	})
 
+	console.log(expanded[0].length)
+
 	for(let i = 0; i < emptyRow.length; i++) {
-		expanded.splice(emptyRow[i] + i, 0, '.'.repeat(expanded[0].length))
+		
+		//console.log(emptyRow[i])
+
+		//let top = expanded.slice(0, emptyRow[i])
+		let emptyLine = '.'.repeat(expanded[0].length)
+		let insert = Array(999999).fill(emptyLine)
+		expanded.splice(emptyRow[i] + i, 0, insert)
+		//console.log(expanded)
+		
+		/*
+		for(j=0; j < 10; j++) {
+			expanded.splice(emptyRow[i] + j, 0, '.'.repeat(expanded[0].length))
+		}
+		*/
 	}
+
+	expanded = expanded.flat()
+
+	console.log(expanded.length)
 
 	expanded.forEach((line, i) => {
 		if(/\#/.test(line)) {
@@ -73,8 +99,8 @@ fs.readFile('../input.txt', (err, data) => {
 
 	})
 
-	console.log(expanded)
-	console.log(galaxyIndex)
+	//console.log(expanded)
+	//console.log(galaxyIndex)
 
 	let distanceSum = 0
 
@@ -82,6 +108,7 @@ fs.readFile('../input.txt', (err, data) => {
 		//take in first galaxy
 
 		for(j = i + 1; j < galaxyIndex.length; j++) {
+
 			distanceSum += Math.abs((galaxyIndex[j][0] - galaxy[0])) + Math.abs((galaxyIndex[j][1] - galaxy[1]))
 			//console.log(distanceSum) 
 		}
